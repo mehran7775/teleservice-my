@@ -1,6 +1,5 @@
 @extends('layouts.frontend')
 @section('content')
-    <p>d</p>
     <div class="row ">
         <div id="main">
             <img src="images/72.jpg" alt="">
@@ -21,3 +20,4 @@
         </div>
     </div>
 @stop
+s
