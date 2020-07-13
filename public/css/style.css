@@ -1,0 +1,32 @@
+#main{
+    width:100%;
+
+}
+#main img{
+    width: 100%;
+    height: 80%;
+}
+#items{
+    width: 25%;
+    height: 27%;
+    bottom: 50%;
+    right: 36%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    justify-items: flex-start;
+    flex-direction: row;
+}
+#items div{
+    width: 40%;
+    height: 20%;
+    background: #253A3F;
+    border-radius: 3%;
+    text-align: center;
+    margin: auto;
+    cursor: pointer;
+    color: white;
+}
+#items div:hover{
+    background: #3A5157;
+}
