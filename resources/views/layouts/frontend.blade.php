@@ -11,16 +11,23 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="" dir="rtl">
-<div class="container-fluid">
-    <div class="row">
-        @include('frontend.partials.header.navbar')
-    </div>
-    <div class="row">
-        <div class="col">
-            @yield('content')
+    <div class="container-fluid">
+        <header class="row">
+            <div class="col">
+                @include('frontend.partials.header.navbar')
+            </div>
+        </header>
+        <div class="row">
+            <div class="col">
+                @yield('content')
+            </div>
         </div>
+        <footer class="row">
+            <div class="col">
+                @include('frontend.partials.footer.footer')
+            </div>
+        </footer>
     </div>
-</div>
 <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap1.min.js"></script>
 </body>
