@@ -64,11 +64,11 @@ class DashboardController extends Controller
                 , 202);
         } elseif ($request->input('role') == "expert") {
             $request->validate([
-                'meliNumber' => 'require|digits:10',
-                'meliFile' => 'require|mimes:jpg,png|max:2048',
-                'madrakFile' =>'require|mimes:pdf|max:4048',
-                'city' => 'require',
-                'street' => 'require'
+                'meliNumber' => 'required|digits:10',
+                'meliFile' => 'required|mimes:jpg,png|max:2048',
+                'madrakFile' =>'required|file|mimes:pdf',
+                'city' => 'required',
+                'street' => 'required'
             ]);
             $user->role = $request->input('role');
             $user['number_meli'] = $request->input('meliNumber');

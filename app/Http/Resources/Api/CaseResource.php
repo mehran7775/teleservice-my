@@ -15,6 +15,7 @@ class CaseResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'fullNameSick' =>$this->sick->full_name,
             'meliNumber' =>$this->sick->number_meli,
             'category' => $this->category->name,

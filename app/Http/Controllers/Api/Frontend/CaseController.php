@@ -55,7 +55,7 @@ class CaseController extends Controller
                 'number_meli' =>$request->input('meliNumber'),
                 'full_name' => $request->input('fullNameSick')
             ];
-            $sick=Sick::create($data_sick);
+            $sick=Sick::updateOrCreate($data_sick);
             $data_case=[
                 'user_id' =>$user->id,
                 'sick_id' =>$sick->id,
@@ -68,16 +68,16 @@ class CaseController extends Controller
             ];
             // $sick->cases->create($data_case);
             $case=CaseFile::create($data_case);
-           
-           
+
+
         }else{
             return Response(['message' => trans('api.user.dashboard.error')], 404);
         }
 
        return Response('ثبت باموفقیت انجام شد'
     ,201);
-        
-        
+
+
     }
 
     /**

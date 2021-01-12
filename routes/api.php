@@ -22,8 +22,8 @@ Route::group(['namespace' => 'Api\Frontend'],function (){
       'as' => 'home',
       'uses' => 'HomeController@index'
     ]);
-    Route::get('service',[
-      'as' => 'service',
+    Route::get('services',[
+      'as' => 'services',
       'uses' => 'ServiceController@index'
     ]);
     //Register
@@ -35,7 +35,7 @@ Route::group(['namespace' => 'Api\Frontend'],function (){
         'as' => 'register',
         'uses' => 'UserController@doRegister'
     ]);
-//    Route::apiResource('accounr/register','UserController');
+
 
     //Authentication
     Route::get('account/login',[
@@ -71,6 +71,7 @@ Route::group(['namespace' => 'Api\Frontend'],function (){
         'as' => 'doLogin_with_email' ,
         'uses'=>'UserController@doLoginWithEmail'
     ]);
+    
     Route::get('cities',[
         'as' => 'cities',
         'uses' => 'CityController@index'

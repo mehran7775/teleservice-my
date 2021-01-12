@@ -14,7 +14,7 @@ class CreateCodeVerifyTable extends Migration
     public function up()
     {
         Schema::create('code_verifies',function (Blueprint $table){
-            $table->bigIncrements('id');
+            $table->id();
             $table->integer('user_id')->unsigned();
             $table->char('code_verify_login')->default(0);
             $table->char('code_verify_register')->default(0);
