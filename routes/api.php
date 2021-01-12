@@ -80,6 +80,9 @@ Route::group(['namespace' => 'Api\Frontend'],function (){
         'as' => 'categories',
         'uses' => 'CategoryController@index'
     ]);
+    Route::get('check',function(){
+        return 'check';
+    });
 //    Route::apiResources([
 //        'upload' => 'uploadController'
 //    ]);
