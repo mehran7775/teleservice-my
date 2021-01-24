@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Http\Requests\api\User\UserRegisterRequest;
-use App\Http\Resources\Api\DashboardIndexResource;
+use App\Http\Resources\Api\LoginRecource;
 use App\Jobs\SendEmailNotify;
 use App\Mail\UserLogin;
 use App\Mail\UserRegister;
@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Location;
 use Symfony\Component\Mime\Header\MailboxHeader;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -112,7 +113,7 @@ class UserController extends Controller
             return Response()->json([
                 'success' => trans('api.user.login.success'),
                 'token' => $token,
-                'user' => new DashboardIndexResource($user)
+                'user' => new LoginRecource($user)
             ]);
         } else {
             return response()->json([
@@ -187,15 +188,14 @@ class UserController extends Controller
         return response()->json(['message' => trans('api.user.logout.success')]);
     }
 
-    public function authCheck()
-    {
-        if (Auth::check()) {
-            return response()->json(['result' => true]);
-        }
-        if ($user = Auth::user() != null) {
-            return response()->json($user);
-        }
-        return response()->json(['message' => 'Unauthenticated'], 401);
-    }
-
+    // public function authCheck()
+    // {
+    //     if (Auth::check()) {
+    //         return response()->json(['result' => true]);
+    //     }
+    //     if ($user = Auth::user() != null) {
+    //         return response()->json($user);
+    //     }
+    //     return response()->json(['message' => 'Unauthenticated'], 401);
+    // }
 }

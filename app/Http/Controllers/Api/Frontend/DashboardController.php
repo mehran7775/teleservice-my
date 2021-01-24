@@ -40,16 +40,14 @@ class DashboardController extends Controller
             $request->validate([
                 'meliNumber' => 'required|digits:10',
                 'meliFile' => 'required|mimes:jpg,png|max:4048',
-                'centerFile' =>'required|file|mimes:pdf',
-                'expertFile' =>'nullable',
+                'centerFile' => 'required|file|mimes:pdf',
+                'expertFile' => 'nullable',
                 'city' => 'required',
                 'street' => 'required'
             ]);
             $user->role = $request->input('role');
             $user['number_meli'] = $request->input('meliNumber');
             $user->save();
-//            $uploadController=new UploadController;
-//            $uploadController->store();
             (new UploadController())->store($request);
             Address::create([
                 'user_id' => $user->id,
@@ -60,13 +58,14 @@ class DashboardController extends Controller
                 [
                     'message' => trans('api.user.dashboard.success'),
                     'id' => $user->id,
-                ]
-                , 202);
+                ],
+                200
+            );
         } elseif ($request->input('role') == "expert") {
             $request->validate([
                 'meliNumber' => 'required|digits:10',
                 'meliFile' => 'required|mimes:jpg,png|max:2048',
-                'madrakFile' =>'required|file|mimes:pdf',
+                'madrakFile' => 'required|file|mimes:pdf',
                 'city' => 'required',
                 'street' => 'required'
             ]);
@@ -83,8 +82,9 @@ class DashboardController extends Controller
                 [
                     'message' => trans('api.user.dashboard.success'),
                     'id' => $user->id,
-                ]
-                , 202);
+                ],
+                200
+            );
         }
     }
 
@@ -96,11 +96,11 @@ class DashboardController extends Controller
      */
     public function show($id)
     {
-        $user=User::findOrFail($id);
+        $user = User::findOrFail($id);
         return Response([
             'user' => new DashboardIndexResource($user)
         ]);
-//        'user' => new DashboardIndexResource($user)
+        //        'user' => new DashboardIndexResource($user)
     }
 
     /**
@@ -112,8 +112,8 @@ class DashboardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user =User::findOrFail($id);
-        $data=[
+        $user = User::findOrFail($id);
+        $data = [
             'name' => $request->input('name'),
             'username' => $request->input('username'),
             'email' => $request->input('email'),
@@ -124,37 +124,36 @@ class DashboardController extends Controller
             'city' => $request->input('city'),
             'street' => $request->input('street')
         ]);
-        $files=$request->allFiles();
-        if ($files){
-            foreach ($files as $file){
-                switch ($file){
-                    case $request->file('meliFile'):{
-                        $file_name=$user->files->where('file_what','meliFile')->pluck('file_name')[0];
-                        (new UploadController())->update2($file,$file_name,'meliFile');
-                        break;
-                    }
-                    case $request->file('centerFile'):{
-                        $file_name=$user->files->where('file_what','centerFile')->pluck('file_name')[0];
-                        (new UploadController())->update2($file,$file_name,'centerFile');
-                        break;
-                    }
-                    case $request->file('expertFile'):{
-                        $file_name=$user->files->where('file_what','expertFile')->pluck('file_name')[0];
-                        (new UploadController())->update2($file,$file_name,'expertFile');
-                        break;
-                    }
-                    case $request->file('madrakFile'):{
-                        $file_name=$user->files->where('file_what','madrakFile')->pluck('file_name')[0];
-                        (new UploadController())->update2($file,$file_name,'madrakFile');
-                        break;
-                    }
+        $files = $request->allFiles();
+        if ($files) {
+            foreach ($files as $file) {
+                switch ($file) {
+                    case $request->file('meliFile'): {
+                            $file_name = $user->files->where('file_what', 'meliFile')->pluck('file_name')[0];
+                            (new UploadController())->update2($file, $file_name,'meliFile');
+                            break;
+                        }
+                    case $request->file('centerFile'): {
+                            $file_name = $user->files->where('file_what', 'centerFile')->pluck('file_name')[0];
+                            (new UploadController())->update2($file, $file_name,'centerFile');
+                            break;
+                        }
+                    case $request->file('expertFile'): {
+                            $file_name = $user->files->where('file_what', 'expertFile')->pluck('file_name')[0];
+                            (new UploadController())->update2($file, $file_name,'expertFile');
+                            break;
+                        }
+                    case $request->file('madrakFile'): {
+                            $file_name = $user->files->where('file_what', 'madrakFile')->pluck('file_name')[0];
+                            (new UploadController())->update2($file, $file_name,'madrakFile');
+                            break;
+                        }
                 }
             }
         }
         return Response([
             'message' => trans('api.user.update.success'),
-            'user' => new DashboardIndexResource($user),
-        ],201);
+        ], 201);
     }
 
     /**

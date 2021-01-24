@@ -36,7 +36,7 @@ class UploadController extends Controller
         $user=Auth::user();
         foreach ($request->allFiles() as $file){
             $new_name_file=Str::random(40) . '.' . $file->getClientOriginalExtension();
-            $result = $file->storeAs('files', $new_name_file);
+            $result = $file->storeAs('public/files', $new_name_file);
             if ($result){
                 $file_what='';
                 switch ($file){
@@ -56,6 +56,9 @@ class UploadController extends Controller
                         $file_what='madrakFile';
                         break;
                     }
+                    case $request->file('profile'):
+                        $file_what='profile';
+                        break;
                 }
                 $new_file_data = [
                     'user_id' => $user->id,
@@ -147,19 +150,18 @@ class UploadController extends Controller
     public function update2($request,$file_name,$file_what)
     {
         $user=Auth::user();
+        Storage::delete('public/files/'.$file_name);
+        // File::where('file_name',$file_name)->delete();
         $new_name_file=Str::random(40) . '.' . $request->getClientOriginalExtension();
-        $result = $request->storeAs('files', $new_name_file);
-        Storage::delete('files/'.$file_name);
-        File::where('file_name',$file_name)->delete();
+        $result = $request->storeAs('public\files', $new_name_file);
         if ($result) {
             $new_file_data = [
-                'user_id' => $user->id,
                 'file_type' => $request->getMimeType(),
                 'file_size' => $request->getSize(),
                 'file_name' => $new_name_file,
-                'file_what' =>$file_what
             ];
-            $user->files()->update($new_file_data);
+            $user->files()->where('file_what',$file_what)->update($new_file_data);
+           
         }else {
             return Response(['message' => trans('api.user.dashboard.error')], 404);
         }

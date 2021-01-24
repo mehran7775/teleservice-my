@@ -7,6 +7,7 @@ use App\Models\CaseFile;
 use App\Models\Category;
 use App\Models\Sick;
 use App\Http\Requests\api\Cases\CaseRequest;
+use App\Http\Requests\api\Cases\CaseUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
@@ -14,6 +15,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Http\Resources\Api\CaseResource;
+use App\Http\Resources\Api\CaseResourceCollection;
 
 class CaseController extends Controller
 {
@@ -24,17 +26,25 @@ class CaseController extends Controller
      */
     public function index()
     {
-        $user=Auth::user();
-        $cases=CaseFile::where('user_id',$user->id)->get();
-        // return Response($cases);
-        if($cases){
-            return Response(CaseResource::collection($cases));
-        }else{
-            return Response(['message' => 'هنوز موردی ثبت نشده است.'],404);
+        $user = Auth::user();
+        if ($user->role == 'clerk') {
+            $cases = CaseFile::where('user_id', $user->id)->get();
+            // return Response($cases);
+            if ($cases) {
+                return Response(CaseResource::collection($cases));
+            } else {
+                return Response(['message' => 'هنوز موردی ثبت نشده است.'], 404);
+            }
+        }else if($user->role=='expert') {
+            $cases2=CaseFile::get();
+            if ($cases2) {
+                // return $cases2;
+                return Response(CaseResource::collection($cases2));
+            } else {
+                return Response(['message' => 'هنوز موردی ثبت نشده است.'], 404);
+            }
+
         }
-        // $case=CaseFile::find(11);
-        // return Response($case->sick->pluck('number_meli')[0]);
-        // return Response($case->category);
     }
 
     /**
@@ -46,20 +56,20 @@ class CaseController extends Controller
     public function store(CaseRequest $request)
     {
         $request->validated();
-        $user=auth()->user();
-        $category=Category::where('name',$request->input('category'))->first();
-        $name_file=Str::random(40).'.'.$request->file('caseFile')->getClientOriginalExtension();
-        $result=$request->file('caseFile')->storeAs('files',$name_file);
-        if($result){
-            $data_sick=[
-                'number_meli' =>$request->input('meliNumber'),
+        $user = auth()->user();
+        $category = Category::where('name', $request->input('category'))->first();
+        $name_file = Str::random(40) . '.' . $request->file('caseFile')->getClientOriginalExtension();
+        $result = $request->file('caseFile')->storeAs('public/files', $name_file);
+        if ($result) {
+            $data_sick = [
+                'number_meli' => $request->input('meliNumber'),
                 'full_name' => $request->input('fullNameSick')
             ];
-            $sick=Sick::updateOrCreate($data_sick);
-            $data_case=[
-                'user_id' =>$user->id,
-                'sick_id' =>$sick->id,
-                'category_id' =>$category->id,
+            $sick = Sick::updateOrCreate($data_sick);
+            $data_case = [
+                'user_id' => $user->id,
+                'sick_id' => $sick->id,
+                'category_id' => $category->id,
                 'name' => $name_file,
                 'size' => $request->file('caseFile')->getSize(),
                 'expired_at' => $request->input('time'),
@@ -67,17 +77,15 @@ class CaseController extends Controller
                 'updated_at' => Carbon::now()
             ];
             // $sick->cases->create($data_case);
-            $case=CaseFile::create($data_case);
-
-
-        }else{
+            $case = CaseFile::create($data_case);
+        } else {
             return Response(['message' => trans('api.user.dashboard.error')], 404);
         }
 
-       return Response('ثبت باموفقیت انجام شد'
-    ,201);
-
-
+        return Response(
+            trans('api.cases.register.success'),
+            200
+        );
     }
 
     /**
@@ -98,9 +106,41 @@ class CaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CaseUpdateRequest $request, $id)
     {
-        //
+        $request->validated();
+        $case = CaseFile::findOrFail($id);
+        $case->sick->update($request->all(['full_name', 'number_meli']));
+        $category = Category::where('name', $request->input('category'))->first();
+        $new_data_case = [];
+        if ($request->file('caseFile')) {
+            Storage::delete('public/files/' . $case->name);
+            $name_file = Str::random(40) . '.' . $request->file('caseFile')->getClientOriginalExtension();
+            $result = $request->file('caseFile')->storeAs('public/files', $name_file);
+            if ($result) {
+                $new_data_case['name'] = $name_file;
+                $new_data_case['size'] = $request->file('caseFile')->getSize();
+            } else {
+                return Response(['message' => 'فایل نامعتبر است'], 404);
+            }
+        }
+        $new_data_case['category_id'] = $category->id;
+        $new_data_case['expired_at'] = $request->input('expired_at');
+        $new_data_case['updated_at'] = Carbon::now();
+        $res = $case->update($new_data_case);
+        // $result = $case->update($request->all());
+        if ($res) {
+            return Response(
+                [
+                    'message' => trans('api.cases.update.success'),
+                ],
+                201
+            );
+        } else {
+            return Response(trans('api.cases.update.failed'), 400);
+        }
+
+        // return Response($id);
     }
 
     /**
@@ -111,6 +151,17 @@ class CaseController extends Controller
      */
     public function destroy($id)
     {
+        $result=CaseFile::findOrFail($id)->delete();
+        // return $result;
+        if ($result) {
+            return Response([
+                'message' =>trans('api.cases.delete.success')
+            ],200);
+        }else{
+            return Response([
+                'message' =>trans('api.cases.delete.failed')
+            ],202);
+        }
         //
     }
 }

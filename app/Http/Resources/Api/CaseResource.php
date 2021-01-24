@@ -17,11 +17,13 @@ class CaseResource extends JsonResource
         return [
             'id' => $this->id,
             'fullNameSick' =>$this->sick->full_name,
+            'name' => $this->name,
             'meliNumber' =>$this->sick->number_meli,
             'category' => $this->category->name,
             'status' => $this->status,
             'created_at' => $this->created_at,
-            'expired_at'=>$this->expired_at
+            'expired_at'=>$this->expired_at,
+            'caseFile' =>asset('storage/files/'.$this->name)
         ];
     }
     // public function with(){
