@@ -15,7 +15,7 @@ class CreateCodeVerifyTable extends Migration
     {
         Schema::create('code_verifies',function (Blueprint $table){
             $table->id();
-            $table->integer('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->char('code_verify_login')->default(0);
             $table->char('code_verify_register')->default(0);
             $table->dateTime('expired_at');

@@ -15,9 +15,9 @@ class CreateCasesTable extends Migration
     {
         Schema::create('cases', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('sick_id')->unsigned();
-            $table->integer('category_id')->unsigned();
+            $table->bigInteger('category_id')->unsigned();
             $table->string('name');
             $table->bigInteger('size');
             $table->integer('status')->default(0);
@@ -25,7 +25,7 @@ class CreateCasesTable extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('sick_id')->references('sick_id')->on('sicks');
+            $table->foreign('sick_id')->references('id')->on('sicks');
             $table->foreign('category_id')->references('id')->on('categorises')->onDelete('cascade');
         });
     }
