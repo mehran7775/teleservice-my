@@ -19,7 +19,7 @@ class DashboardIndexResource extends JsonResource
     //    public $with=["foo" => "bar"];
     public function toArray($request)
     {
-        if ($this->files()->where('file_what', 'profile') == null) {
+        if ($this->files()->where('file_what', 'profile') === null) {
             return [
                 'id' => $this->id,
                 'name' => $this->name,
@@ -40,7 +40,7 @@ class DashboardIndexResource extends JsonResource
                 'city' => Address::where('user_id', $this->id)->pluck('city'),
                 'street' => Address::where('user_id', $this->id)->pluck('street'),
                 'role' => $this->role,
-                'avatar' => asset('storage/files/' . $this->files->where('file_what', 'profile')->pluck('file_name')[0])
+                'avatar' => storage_path('files\\' . $this->files->where('file_what', 'profile')->pluck('file_name')[0])
             ];
         }
     }

@@ -10,7 +10,7 @@ use App\Models\CaseFile;
 class DownloadController extends Controller
 {
     public function download($name){
-        $path=public_path('storage\files\\'.$name);
+        $path=storage_path('files\\'.$name);
         $newName = 'nicesnippets-pdf-file-'.time().'.pdf';
         $header = [
             'Content-Type' => 'application/*',
