@@ -74,5 +74,16 @@ class CommandController extends Controller
            }
      
          }
+         elseif ($name == 'migrate-rollback') {
+           try {
+             echo 'php artisan migrate:rollback... <br>';
+             Artisan::call('migrate:rollback');
+             echo 'app migrate:rollback completed';
+           }
+           catch (Exception $e) {
+             return $e->getMessage();
+           }
+     
+         }
     }
 }
