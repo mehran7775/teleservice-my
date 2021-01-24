@@ -85,5 +85,15 @@ class CommandController extends Controller
            }
      
          }
+         elseif($name=='passport-install'){
+            try {
+           echo 'php artisan passport:install... <br>';
+           Artisan::call('passport:install');
+           echo 'app passport:install completed';
+          }
+          catch (Exception $e) {
+           return $e->getMessage();
+          }
+       }
     }
 }

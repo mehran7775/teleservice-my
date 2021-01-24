@@ -55,7 +55,7 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        $path = asset('storage/files/' . $id);
+        $path = asset('storage\files\\' . $id);
         if ($path) {
             return Response([
                 'avatar' => $path

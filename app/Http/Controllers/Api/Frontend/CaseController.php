@@ -59,7 +59,7 @@ class CaseController extends Controller
         $user = auth()->user();
         $category = Category::where('name', $request->input('category'))->first();
         $name_file = Str::random(40) . '.' . $request->file('caseFile')->getClientOriginalExtension();
-        $result = $request->file('caseFile')->storeAs('public/files', $name_file);
+        $result = $request->file('caseFile')->storeAs('public\files', $name_file);
         if ($result) {
             $data_sick = [
                 'number_meli' => $request->input('meliNumber'),
@@ -114,7 +114,7 @@ class CaseController extends Controller
         $category = Category::where('name', $request->input('category'))->first();
         $new_data_case = [];
         if ($request->file('caseFile')) {
-            Storage::delete('public/files/' . $case->name);
+            Storage::delete('public\files\\' . $case->name);
             $name_file = Str::random(40) . '.' . $request->file('caseFile')->getClientOriginalExtension();
             $result = $request->file('caseFile')->storeAs('public/files', $name_file);
             if ($result) {
@@ -152,7 +152,6 @@ class CaseController extends Controller
     public function destroy($id)
     {
         $result=CaseFile::findOrFail($id)->delete();
-        // return $result;
         if ($result) {
             return Response([
                 'message' =>trans('api.cases.delete.success')

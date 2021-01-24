@@ -19,7 +19,7 @@ class DashboardIndexResource extends JsonResource
     //    public $with=["foo" => "bar"];
     public function toArray($request)
     {
-        if ($this->files->where('file_what', 'profile') === null) {
+        if ($this->files()->where('file_what', 'profile') == null) {
             return [
                 'id' => $this->id,
                 'name' => $this->name,

@@ -36,7 +36,7 @@ class UploadController extends Controller
         $user=Auth::user();
         foreach ($request->allFiles() as $file){
             $new_name_file=Str::random(40) . '.' . $file->getClientOriginalExtension();
-            $result = $file->storeAs('public/files', $new_name_file);
+            $result = $file->storeAs('public\files', $new_name_file);
             if ($result){
                 $file_what='';
                 switch ($file){
