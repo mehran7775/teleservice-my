@@ -19,6 +19,16 @@ class CommandController extends Controller
              return $e->getMessage();
             }
            }
+		if ($name == 'route-clear') {
+            try {
+             echo 'php artisan route:clear... <br>';
+             Artisan::call('route:clear');
+             echo 'app cache route completed';
+            }
+            catch (Exception $e) {
+             return $e->getMessage();
+            }
+           }
          elseif ($name == 'view-clear') {
            try {
              echo 'php artisan view:clear... <br>';
@@ -35,6 +45,17 @@ class CommandController extends Controller
              echo 'php artisan config:clear... <br>';
              Artisan::call('config:clear');
              echo 'app config clear completed';
+           }
+           catch (Exception $e) {
+             return $e->getMessage();
+           }
+     
+         }
+		  elseif ($name == 'config-cache') {
+           try {
+             echo 'php artisan config:cache... <br>';
+             Artisan::call('config:cache');
+             echo 'app config cache completed';
            }
            catch (Exception $e) {
              return $e->getMessage();
@@ -90,6 +111,16 @@ class CommandController extends Controller
            echo 'php artisan passport:install... <br>';
            Artisan::call('passport:install');
            echo 'app passport:install completed';
+          }
+          catch (Exception $e) {
+           return $e->getMessage();
+          }
+       }
+		  elseif($name=='storage-link'){
+            try {
+           echo 'php artisan storage:link... <br>';
+           Artisan::call('storage:link');
+           echo 'app storage:link completed';
           }
           catch (Exception $e) {
            return $e->getMessage();
