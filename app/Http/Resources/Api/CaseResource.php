@@ -23,7 +23,7 @@ class CaseResource extends JsonResource
             'status' => $this->status,
             'created_at' => $this->created_at,
             'expired_at'=>$this->expired_at,
-            'caseFile' =>asset('storage/files/'.$this->name)
+            'caseFile' =>asset('storage/files/cases'.$this->name)
         ];
     }
     // public function with(){

@@ -55,7 +55,7 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        $path = asset('storage\files\\' . $id);
+        $path = asset('storage/files/'. $id);
         if ($path) {
             return Response([
                 'avatar' => $path
@@ -80,9 +80,9 @@ class ProfileController extends Controller
             'profile' => 'required|image|mimes:jpeg|max:2500000'
         ]);
         // $user = Auth::user();
-        Storage::delete('public/files/' . $id);
+        Storage::delete('files/' . $id);
         $new_name_file = Str::random(40) . '.' . $request->file('profile')->getClientOriginalExtension();
-        $result = $request->file('profile')->storeAs('public/files', $new_name_file);
+        $result = $request->file('profile')->storeAs('./', $new_name_file);
         if ($result) {
             $new_file_data = [
                 'file_type' => $request->file('profile')->getMimeType(),

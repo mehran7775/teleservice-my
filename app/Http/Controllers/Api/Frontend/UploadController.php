@@ -36,7 +36,7 @@ class UploadController extends Controller
         $user=Auth::user();
         foreach ($request->allFiles() as $file){
             $new_name_file=Str::random(40) . '.' . $file->getClientOriginalExtension();
-            $result = $file->storeAs('public\files', $new_name_file);
+            $result = $file->storeAs('./', $new_name_file);
             if ($result){
                 $file_what='';
                 switch ($file){
@@ -150,10 +150,12 @@ class UploadController extends Controller
     public function update2($request,$file_name,$file_what)
     {
         $user=Auth::user();
-        Storage::delete('public/files/'.$file_name);
-        // File::where('file_name',$file_name)->delete();
+        // $path=Storage::path($file_name);
+        // Storage::delete($path);
+        // Storage::delet
+        unlink(public_path('storage/files/'.$file_name));
         $new_name_file=Str::random(40) . '.' . $request->getClientOriginalExtension();
-        $result = $request->storeAs('public\files', $new_name_file);
+        $result = $request->storeAs('./', $new_name_file);
         if ($result) {
             $new_file_data = [
                 'file_type' => $request->getMimeType(),
