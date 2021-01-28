@@ -21,6 +21,7 @@ class CreateCasesTable extends Migration
             $table->string('name');
             $table->bigInteger('size');
             $table->integer('status')->default(0);
+            $table->string('report',2000)->default(0);
             $table->time('expired_at');
             $table->timestamps();
 

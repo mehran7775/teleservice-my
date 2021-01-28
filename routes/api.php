@@ -101,7 +101,7 @@ Route::group(['namespace' => 'Api\Frontend'],function (){
         Route::apiResource('account/dashboard', 'DashboardController');
         Route::apiResource('account/profile','ProfileController');
         Route::apiResource('case','CaseController');
-        Route::get('download/{name}','DownloadController@download');
+        Route::get('download/{name}','DownloadController@download')->name('download');
     });
 
 });

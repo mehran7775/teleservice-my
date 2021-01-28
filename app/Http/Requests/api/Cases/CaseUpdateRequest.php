@@ -28,7 +28,8 @@ class CaseUpdateRequest extends FormRequest
             'number_meli' => 'required|digits:10',
             'category' => 'required',
             'caseFile' =>'file|mimes:pdf',
-            'expired_at' => 'required|date_format:H:i'
+            'expired_at' => 'required|date_format:H:i',
+            'report' => 'string'
         ];
     }
 }

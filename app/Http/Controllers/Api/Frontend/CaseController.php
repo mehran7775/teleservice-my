@@ -124,18 +124,31 @@ class CaseController extends Controller
                 return Response(['message' => 'فایل نامعتبر است'], 404);
             }
         }
+        if ($request->input('report')) {
+            $new_data_case['report'] = $request->input('report');
+        }
         $new_data_case['category_id'] = $category->id;
         $new_data_case['expired_at'] = $request->input('expired_at');
         $new_data_case['updated_at'] = Carbon::now();
         $res = $case->update($new_data_case);
         // $result = $case->update($request->all());
         if ($res) {
-            return Response(
-                [
-                    'message' => trans('api.cases.update.success'),
-                ],
-                201
-            );
+            if ($case->report === '0') {
+                return Response(
+                    [
+                        'message' => trans('api.cases.update.success'),
+                    ],
+                    201
+                );
+            }else {
+                return Response(
+                    [
+                        'message' => trans('api.cases.register_report'),
+                    ],
+                    201
+                );
+            }
+           
         } else {
             return Response(trans('api.cases.update.failed'), 400);
         }
