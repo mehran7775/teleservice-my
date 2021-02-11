@@ -6,10 +6,12 @@ use App\Models\CaseFile;
 use App\Models\File;
 use App\Models\Address;
 use App\Models\CodeVerify;
+use App\Models\Report;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+
 
 class User extends Authenticatable
 {
@@ -53,6 +55,9 @@ class User extends Authenticatable
     public function caseFiles()
     {
         return $this->hasMany(CaseFile::class);
+    }
+    public function reports(){
+        return $this->hasMany(Report::class);
     }
 
 //    public function toArray()

@@ -11,20 +11,15 @@ use App\Models\Address;
 use App\Models\CodeVerify;
 use App\User;
 use Carbon\Carbon;
-
 use Faker\Provider\File;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-
 //use Intervention\Image\Facades\Image;
-
-
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Location;
 use Symfony\Component\Mime\Header\MailboxHeader;
@@ -48,10 +43,10 @@ class UserController extends Controller
         if (!$validated) {
             return response()->json(['message' => $validated->errors()]);
         } else {
-           User::create([
+            User::create([
                 'name' => $request->input('name'),
                 'username' => $request->input('username'),
-//                'password' => Hash::make(Request::get('password')),
+                //                'password' => Hash::make(Request::get('password')),
                 'password' => Hash::make($request->input('password')),
                 'email' => $request->input('email'),
             ]);
@@ -83,14 +78,14 @@ class UserController extends Controller
             $user->update([
                 'password' => bcrypt($code_verify)
             ]);
-//            CodeVerify::where('user_id', $user->id)->update([
-//                'code_verify_login' => $code_verify,
-//                'expired_at' => Carbon::now()->addSeconds(90),
-//            ]);
+            //            CodeVerify::where('user_id', $user->id)->update([
+            //                'code_verify_login' => $code_verify,
+            //                'expired_at' => Carbon::now()->addSeconds(90),
+            //            ]);
             Mail::to($user->email)->send(new UserLogin($user));
             return response()->json(['result' => 'Sent codeVerify successfully']);
         } else {
-            return response()->json(['errorUser' => 'user noRegistered'],404);
+            return response()->json(['errorUser' => 'user noRegistered'], 404);
         }
     }
 
@@ -109,7 +104,7 @@ class UserController extends Controller
         $credentials = request(['username', 'password']);
         if (Auth::attempt($credentials, $remember)) {
             $token = Auth::user()->createToken('Personal Access Token')->accessToken;
-            $user=Auth::user();
+            $user = Auth::user();
             return Response()->json([
                 'success' => trans('api.user.login.success'),
                 'token' => $token,
@@ -128,7 +123,8 @@ class UserController extends Controller
         return response()->json(
             [
                 'users' => $users
-            ]);
+            ]
+        );
     }
 
     public function loginWithEmail(Request $request)
@@ -149,11 +145,9 @@ class UserController extends Controller
                 'result' => 'Send CodeVerify With Email',
                 'code' => $code
             ]);
-
         } else {
             return response()->json(['errorEmail' => 'Invalid Email'], 404);
         }
-
     }
 
     public function showloginWithEmail()
@@ -186,6 +180,20 @@ class UserController extends Controller
     {
         Auth::user()->token()->revoke();
         return response()->json(['message' => trans('api.user.logout.success')]);
+    }
+    public function get_wallet()
+    {
+        $user = Auth::user();
+        if ($wallet=DB::table('wallets')->where('user_id',$user->id)->first()) {
+            $amount = $wallet->amount;
+            return Response([
+                'wallet' => $amount
+            ],200);
+        }else {
+            return Response([
+                'wallet' => 0
+            ]);
+        }
     }
 
     // public function authCheck()

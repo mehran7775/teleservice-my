@@ -5,6 +5,7 @@ namespace App\Models;
 use App\User;
 use App\Models\Sick;
 use App\Models\Category;
+use App\Models\Report;
 use Illuminate\Database\Eloquent\Model;
 
 class CaseFile extends Model
@@ -21,5 +22,8 @@ class CaseFile extends Model
     }
     public function category(){
         return $this->belongsTo(Category::class);
+    }
+    public function report(){
+        return $this->hasOne(Report::class,'case_id');
     }
 }

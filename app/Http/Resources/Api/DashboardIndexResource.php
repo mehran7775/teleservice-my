@@ -28,7 +28,7 @@ class DashboardIndexResource extends JsonResource
                 'meliNumber' => $this->number_meli,
                 'city' => Address::where('user_id', $this->id)->pluck('city'),
                 'street' => Address::where('user_id', $this->id)->pluck('street'),
-                'role' => $this->role,
+                'role' =>$this->role
             ];
         } else {
             return [

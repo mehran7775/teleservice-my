@@ -29,7 +29,6 @@ class CaseUpdateRequest extends FormRequest
             'category' => 'required',
             'caseFile' =>'file|mimes:pdf',
             'expired_at' => 'required|date_format:H:i',
-            'report' => 'string'
         ];
     }
 }

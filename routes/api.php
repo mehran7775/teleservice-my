@@ -102,6 +102,10 @@ Route::group(['namespace' => 'Api\Frontend'],function (){
         Route::apiResource('account/profile','ProfileController');
         Route::apiResource('case','CaseController');
         Route::get('download/{name}','DownloadController@download')->name('download');
+        Route::apiResource('report','ReportController');
+        Route::post('verifyReport','CaseController@verify_report');
+        Route::post('dontVerifyReport','CaseController@dont_verify_report');
+        Route::get('wallet','UserController@get_wallet');
     });
 
 });

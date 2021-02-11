@@ -23,11 +23,11 @@ class CaseRequest extends FormRequest
     public function rules()
     {
         return [
-            'fullNameSick' => 'required|min:6,max:25',
-            'meliNumber' => 'required|digits:10',
+            'full_name' => 'required|min:6,max:25',
+            'number_meli' => 'required|digits:10',
             'category' => 'required',
             'caseFile' =>'required|file|mimes:pdf',
-            'time' => 'required|date_format:H:i'
+            'expired_at' => 'required|date_format:H:i',
         ];
     }
 }

@@ -20,8 +20,8 @@ class CreateCasesTable extends Migration
             $table->bigInteger('category_id')->unsigned();
             $table->string('name');
             $table->bigInteger('size');
+            $table->bigInteger('cost');
             $table->integer('status')->default(0);
-            $table->string('report',2000)->default(0);
             $table->time('expired_at');
             $table->timestamps();
 

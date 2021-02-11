@@ -59,7 +59,7 @@ class DashboardController extends Controller
                     'message' => trans('api.user.dashboard.success'),
                     'id' => $user->id,
                 ],
-                200
+                201
             );
         } elseif ($request->input('role') == "expert") {
             $request->validate([
@@ -83,7 +83,7 @@ class DashboardController extends Controller
                     'message' => trans('api.user.dashboard.success'),
                     'id' => $user->id,
                 ],
-                200
+                201
             );
         }
     }
